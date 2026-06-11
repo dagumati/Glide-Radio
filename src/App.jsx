@@ -3,26 +3,26 @@ import { Radio, Wifi, WifiOff, Star, Plus, Search, MapPin, Sliders, Info } from 
 
 import { cities, stationsByCity } from './stations';
 import { useAudioPlayer } from './useAudioPlayer';
-import { useFavorites }   from './useFavorites';
+import { useFavorites } from './useFavorites';
 
-import { StationCard }        from './components/StationCard';
-import { BottomPlayer }       from './components/BottomPlayer';
-import { CustomTunerModal }   from './components/CustomTunerModal';
+import { StationCard } from './components/StationCard';
+import { BottomPlayer } from './components/BottomPlayer';
+import { CustomTunerModal } from './components/CustomTunerModal';
 import { StationSearchModal } from './components/StationSearchModal';
 
 const TABS = [
-  { id: 'city',      label: 'Stations',   Icon: Radio  },
-  { id: 'favorites', label: 'Favourites', Icon: Star   },
-  { id: 'custom',    label: 'My Stations',Icon: Sliders},
+  { id: 'city', label: 'Stations', Icon: Radio },
+  { id: 'favorites', label: 'Favourites', Icon: Star },
+  { id: 'custom', label: 'My Stations', Icon: Sliders },
 ];
 
 export default function App() {
   const audio = useAudioPlayer();
-  const favs  = useFavorites();
+  const favs = useFavorites();
 
   const [activeTab, setActiveTab] = useState('city');
-  const [cityId, setCityId]     = useState('dfw');
-  
+  const [cityId, setCityId] = useState('dfw');
+
   // Storage for custom stations (separate from hardcoded presets)
   const [customStations, setCustomStations] = useState(() => {
     const raw = localStorage.getItem('teslaRadio_custom');
@@ -34,14 +34,14 @@ export default function App() {
   }, [customStations]);
 
   // Modal tracking
-  const [showTuner,  setShowTuner]  = useState(false);
+  const [showTuner, setShowTuner] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [editStation, setEditStation] = useState(null);
 
   const [showCityPanel, setShowCityPanel] = useState(false);
 
-  const cityStations  = useMemo(() => stationsByCity[cityId] ?? [], [cityId]);
-  const currentCity   = cities.find(c => c.id === cityId);
+  const cityStations = useMemo(() => stationsByCity[cityId] ?? [], [cityId]);
+  const currentCity = cities.find(c => c.id === cityId);
 
   const addCustomStation = (station) => {
     // If we're updating an existing one (same ID or editing a preset)
@@ -63,8 +63,8 @@ export default function App() {
 
   const displayStations =
     activeTab === 'favorites' ? favs.favorites :
-    activeTab === 'custom'    ? customStations :
-    cityStations;
+      activeTab === 'custom' ? customStations :
+        cityStations;
 
   return (
     <div id="app-root" className="flex flex-col min-h-screen"
@@ -80,8 +80,10 @@ export default function App() {
               <Radio size={16} className="text-red-500" />
             </div>
             <div>
-              <h1 className="text-sm font-black text-white leading-none uppercase tracking-tight">Tesla Radio</h1>
-              <p className="text-[10px] text-zinc-600 font-bold leading-none mt-0.5 uppercase tracking-tighter">DFW Dashboard</p>
+              <h1 className="text-sm font-black text-white leading-none uppercase tracking-tight">Glide Radio</h1>
+              <p className="text-[10px] text-zinc-600 font-bold leading-none mt-0.5 uppercase tracking-tighter">
+                {activeTab === 'city' ? `${currentCity?.name} Dashboard` : `${TABS.find(t => t.id === activeTab)?.label} View`}
+              </p>
             </div>
           </div>
 
@@ -91,7 +93,7 @@ export default function App() {
                 <WifiOff size={10} />Error
               </span>
             )}
-            
+
             {activeTab === 'city' && (
               <button
                 onClick={() => setShowCityPanel(p => !p)}
@@ -210,7 +212,7 @@ export default function App() {
         onVolumeChange={audio.setVolume}
       />
 
-      {showTuner  && (
+      {showTuner && (
         <CustomTunerModal
           onAdd={addCustomStation}
           onClose={() => { setShowTuner(false); setEditStation(null); }}

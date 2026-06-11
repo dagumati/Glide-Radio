@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// stations.js  –  Tesla Radio pre-configured station presets
+// stations.js  –  Glide Radio pre-configured station presets
 //
 // ⚠️  CRITICAL: Tesla Browser – Mixed Content Policy
 // ALL streamUrl values MUST begin with "https://"
@@ -11,7 +11,8 @@ export const cities = [
   { id: "nyc", name: "New York, NY", emoji: "🗽" },
   { id: "la", name: "Los Angeles, CA", emoji: "🌴" },
   { id: "chicago", name: "Chicago, IL", emoji: "🌬️" },
-  { id: "national", name: "National / NPR", emoji: "📡" },
+  { id: "national", name: "National / NPR", emoji: "🇺🇸" },
+  { id: "international", name: "International", emoji: "🌎" },
 ];
 
 export const stationsByCity = {
@@ -111,6 +112,68 @@ export const stationsByCity = {
   ],
 
   // ── Other Cities ──────────────────────────────────────────────────────────
+  nyc: [
+    {
+      id: "nyc-wnyc",
+      name: "WNYC 93.9",
+      frequency: "93.9 FM",
+      genre: "NPR / News",
+      streamUrl: "https://wnyc.streamguys1.com/wnyc939-aac",
+      accentColor: "#f59e0b",
+    },
+    {
+      id: "nyc-hot97",
+      name: "HOT 97",
+      frequency: "97.1 FM",
+      genre: "Hip Hop",
+      streamUrl: "https://playerservices.streamtheworld.com/api/livestream-redirect/WQHTFMAAC.aac",
+      accentColor: "#ef4444",
+    },
+    {
+      id: "nyc-z100",
+      name: "Z100",
+      frequency: "100.3 FM",
+      genre: "Top 40 / Pop",
+      streamUrl: "https://stream.revma.ihrhls.com/zc1469",
+      accentColor: "#3b82f6",
+    }
+  ],
+  la: [
+    {
+      id: "la-kcrw",
+      name: "KCRW 89.9",
+      frequency: "89.9 FM",
+      genre: "Indie / Eclectic",
+      streamUrl: "https://kcrw.streamguys1.com/kcrw_192k_mp3_on_air",
+      accentColor: "#10b981",
+    },
+    {
+      id: "la-kpcc",
+      name: "LAist 89.3",
+      frequency: "89.3 FM",
+      genre: "NPR / News",
+      streamUrl: "https://scpr.streamguys1.com/scpr-aac",
+      accentColor: "#f43f5e",
+    }
+  ],
+  chicago: [
+    {
+      id: "chi-wbez",
+      name: "WBEZ 91.5",
+      frequency: "91.5 FM",
+      genre: "NPR / News",
+      streamUrl: "https://wbez.streamguys1.com/wbez-aac",
+      accentColor: "#0ea5e9",
+    },
+    {
+      id: "chi-waxrt",
+      name: "93XRT",
+      frequency: "93.1 FM",
+      genre: "Adult Alternative",
+      streamUrl: "https://playerservices.streamtheworld.com/api/livestream-redirect/WXRTFMAAC.aac",
+      accentColor: "#8b5cf6",
+    }
+  ],
   houston: [
     {
       id: "hou-kuhf",
@@ -130,5 +193,58 @@ export const stationsByCity = {
       streamUrl: "https://npr-ice.streamguys1.com/live.mp3",
       accentColor: "#6366f1",
     }
+  ],
+  international: [
+    {
+      id: "int-bbc",
+      name: "BBC World Service",
+      frequency: "UK / Global",
+      genre: "News / World",
+      streamUrl: "https://stream.live.vc.bbcmedia.co.uk/bbc_world_service",
+      accentColor: "#bb1919",
+    },
+    {
+      id: "int-abc",
+      name: "ABC News Radio",
+      frequency: "Australia",
+      genre: "News / Talk",
+      streamUrl: "https://live-radio01.mediahubaustralia.com/news/aac/",
+      accentColor: "#1a237e",
+    },
+    {
+      id: "int-dubai-eye",
+      name: "Dubai Eye 103.8",
+      frequency: "UAE",
+      genre: "Talk / Business",
+      streamUrl: "https://playerservices.streamtheworld.com/api/livestream-redirect/DUBAI_EYE.mp3",
+      accentColor: "#fcd34d",
+    },
+    {
+      id: "int-rfi",
+      name: "RFI English",
+      frequency: "France / Global",
+      genre: "News / World",
+      streamUrl: "https://rfieng-global.ice.infomaniak.ch/rfieng-global.mp3",
+      accentColor: "#e63946",
+    },
+    {
+      id: "int-mirchi",
+      name: "Club Mirchi",
+      frequency: "India / Bollywood",
+      genre: "Bollywood / Hits",
+      streamUrl: "https://playerservices.streamtheworld.com/api/livestream-redirect/CLUB_MIRCHI_WEB.mp3",
+      accentColor: "#fb923c",
+    },
+    {
+      id: "int-suryan",
+      name: "Suryan FM",
+      frequency: "India / Tamil",
+      genre: "Tamil / Hits",
+      streamUrl: "https://radios.crabdance.com:8002/2",
+      accentColor: "#fb923c",
+    }
+
+
+
   ],
 };

@@ -1,5 +1,5 @@
 {
-  "name": "Tesla Radio",
+  "name": "Glide Radio",
   "short_name": "TeslaFM",
   "description": "Personal FM streaming dashboard for Tesla in-car browser.",
   "start_url": "/",

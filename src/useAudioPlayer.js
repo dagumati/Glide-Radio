@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 
 /**
- * useAudioPlayer – centralised audio engine for Tesla Radio.
+ * useAudioPlayer – centralised audio engine for Glide Radio.
  *
  * Tesla constraints:
  *  • play() MUST be called from a user gesture (click/tap). Never autoplay.
@@ -9,14 +9,14 @@ import { useRef, useState, useEffect, useCallback } from 'react';
  *  • Stall auto-recovery: reload src after 4 s stall.
  */
 export function useAudioPlayer() {
-  const audioRef      = useRef(null);
+  const audioRef = useRef(null);
   const stallTimerRef = useRef(null);
 
   const [currentStation, setCurrentStation] = useState(null);
   // 'idle' | 'loading' | 'playing' | 'paused' | 'error'
   const [playbackState, setPlaybackState] = useState('idle');
-  const [volume,        setVolumeState]   = useState(0.8);
-  const [errorMessage,  setErrorMessage]  = useState('');
+  const [volume, setVolumeState] = useState(0.8);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const clearStallTimer = () => {
     if (stallTimerRef.current) { clearTimeout(stallTimerRef.current); stallTimerRef.current = null; }
@@ -25,12 +25,12 @@ export function useAudioPlayer() {
   useEffect(() => {
     const audio = new Audio();
     audio.preload = 'none';
-    audio.volume  = volume;
+    audio.volume = volume;
     audioRef.current = audio;
 
     const onPlaying = () => { clearStallTimer(); setPlaybackState('playing'); };
     const onWaiting = () => setPlaybackState('loading');
-    const onPause   = () => { clearStallTimer(); setPlaybackState('paused'); };
+    const onPause = () => { clearStallTimer(); setPlaybackState('paused'); };
 
     const onStalled = () => {
       setPlaybackState('loading');
@@ -60,12 +60,12 @@ export function useAudioPlayer() {
 
     audio.addEventListener('playing', onPlaying);
     audio.addEventListener('waiting', onWaiting);
-    audio.addEventListener('pause',   onPause);
+    audio.addEventListener('pause', onPause);
     audio.addEventListener('stalled', onStalled);
-    audio.addEventListener('error',   onError);
+    audio.addEventListener('error', onError);
 
     return () => {
-      ['playing','waiting','pause','stalled','error'].forEach(e => audio.removeEventListener(e, { onPlaying, onWaiting, onPause, onStalled, onError }[`on${e.charAt(0).toUpperCase()+e.slice(1)}`]));
+      ['playing', 'waiting', 'pause', 'stalled', 'error'].forEach(e => audio.removeEventListener(e, { onPlaying, onWaiting, onPause, onStalled, onError }[`on${e.charAt(0).toUpperCase() + e.slice(1)}`]));
       audio.src = '';
       clearStallTimer();
     };
@@ -80,7 +80,7 @@ export function useAudioPlayer() {
 
     if (currentStation?.id === station.id) {
       if (audio.paused) { setPlaybackState('loading'); audio.play().catch(() => setPlaybackState('error')); }
-      else              { audio.pause(); }
+      else { audio.pause(); }
       return;
     }
 
