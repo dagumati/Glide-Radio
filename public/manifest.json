@@ -1,0 +1,18 @@
+{
+  "name": "Tesla Radio",
+  "short_name": "TeslaFM",
+  "description": "Personal FM streaming dashboard for Tesla in-car browser.",
+  "start_url": "/",
+  "display": "fullscreen",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "/radio-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #0a0a0f;
+    color: #f0f0f5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent pull-to-refresh on Tesla's browser */
+    overscroll-behavior: none;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 999px; }
+}
+
+/* ─── Keyframe Animations ─────────────────────────────────────────────────── */
+
+@keyframes eq-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50%       { transform: scaleY(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0px 0px rgba(220, 38, 38, 0); }
+  50%       { box-shadow: 0 0 22px 6px rgba(220, 38, 38, 0.45); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Utility Classes ─────────────────────────────────────────────────────── */
+
+.animate-eq-bar-1 { animation: eq-bar 0.9s ease-in-out infinite; }
+.animate-eq-bar-2 { animation: eq-bar 0.9s ease-in-out 0.15s infinite; }
+.animate-eq-bar-3 { animation: eq-bar 0.9s ease-in-out 0.3s infinite; }
+.animate-eq-bar-4 { animation: eq-bar 0.9s ease-in-out 0.45s infinite; }
+
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-spin-slow  { animation: spin 1s linear infinite; }
+.animate-slide-up   { animation: slide-up 0.35s cubic-bezier(.22,.68,0,1.2) both; }
+.animate-fade-in    { animation: fade-in 0.4s ease both; }
+
+/* ─── Station Card Active Glow ─────────────────────────────────────────────── */
+.card-active {
+  animation: pulse-glow 2s ease-in-out infinite;
+  border-color: rgb(220 38 38) !important;
+}
+
+/* ─── Volume Slider ─────────────────────────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    #dc2626 0%,
+    #dc2626 var(--vol-pct, 80%),
+    #3f3f46 var(--vol-pct, 80%),
+    #3f3f46 100%
+  );
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #dc2626;
+  box-shadow: 0 0 6px rgba(220,38,38,0.6);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #dc2626;
+  cursor: pointer;
+}
