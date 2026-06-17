@@ -19,7 +19,7 @@ export function CustomTunerModal({ onAdd, onClose, initialData }) {
   const validate = () => {
     if (!name.trim())  return 'Station name is required.';
     if (!url.trim())   return 'Stream URL is required.';
-    if (!url.startsWith('https://')) return '⚠ URL must start with https:// (Tesla blocks HTTP).';
+    if (!url.startsWith('https://')) return '⚠ URL must start with https:// (Secure stream required).';
     return '';
   };
 
@@ -73,7 +73,7 @@ export function CustomTunerModal({ onAdd, onClose, initialData }) {
           <div className="space-y-1.5">
             <div className="flex justify-between items-end">
               <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest">Stream URL (HTTPS Only)</label>
-              <span className="text-[9px] text-red-500 font-bold uppercase italic">Tesla Requirement</span>
+              <span className="text-[9px] text-indigo-400 font-bold uppercase tracking-wider">Secure HTTPS Stream</span>
             </div>
             <input
               value={url}

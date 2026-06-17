@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const STORAGE_KEY = 'teslaRadio_favorites';
+const STORAGE_KEY = 'glideRadio_favorites';
+const BACKWARD_COMPAT_KEY = 'teslaRadio_favorites';
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(BACKWARD_COMPAT_KEY);
       return raw ? JSON.parse(raw) : [];
     } catch { return []; }
   });

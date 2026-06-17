@@ -78,8 +78,8 @@ input[type="range"] {
   cursor: pointer;
   background: linear-gradient(
     to right,
-    #dc2626 0%,
-    #dc2626 var(--vol-pct, 80%),
+    var(--accent-color, #dc2626) 0%,
+    var(--accent-color, #dc2626) var(--vol-pct, 80%),
     #3f3f46 var(--vol-pct, 80%),
     #3f3f46 100%
   );
@@ -92,7 +92,7 @@ input[type="range"]::-webkit-slider-thumb {
   height: 14px;
   border-radius: 50%;
   background: #ffffff;
-  border: 2px solid #dc2626;
+  border: 2px solid var(--accent-color, #dc2626);
   box-shadow: 0 0 6px rgba(220,38,38,0.6);
 }
 
@@ -101,6 +101,13 @@ input[type="range"]::-moz-range-thumb {
   height: 14px;
   border-radius: 50%;
   background: #ffffff;
-  border: 2px solid #dc2626;
+  border: 2px solid var(--accent-color, #dc2626);
   cursor: pointer;
+}
+
+/* ─── Mobile Safe Area Padding ────────────────────────────────────────────── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  #bottom-player {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+  }
 }

@@ -15,7 +15,14 @@ export function useAudioPlayer() {
   const [currentStation, setCurrentStation] = useState(null);
   // 'idle' | 'loading' | 'playing' | 'paused' | 'error'
   const [playbackState, setPlaybackState] = useState('idle');
-  const [volume, setVolumeState] = useState(0.8);
+  const [volume, setVolumeState] = useState(() => {
+    try {
+      const saved = localStorage.getItem('glideRadio_volume');
+      return saved !== null ? parseFloat(saved) : 0.8;
+    } catch {
+      return 0.8;
+    }
+  });
   const [errorMessage, setErrorMessage] = useState('');
 
   const clearStallTimer = () => {
@@ -40,6 +47,7 @@ export function useAudioPlayer() {
           const url = audioRef.current.src;
           audioRef.current.src = '';
           audioRef.current.src = url;
+          audioRef.current.volume = volume; // Sync volume on recovery
           audioRef.current.play().catch(() => setPlaybackState('error'));
         }
       }, 4000);
@@ -72,6 +80,56 @@ export function useAudioPlayer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Sync volume changes dynamically to HTML5 Audio element
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  // Sync Media Session API Metadata
+  useEffect(() => {
+    if ('mediaSession' in navigator && currentStation) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentStation.name,
+        artist: `${currentStation.frequency} · ${currentStation.genre}`,
+        album: 'Glide Radio',
+        artwork: [
+          {
+            src: currentStation.logoUrl || '/radio-icon.svg',
+            sizes: 'any',
+            type: 'image/svg+xml'
+          }
+        ]
+      });
+    }
+  }, [currentStation]);
+
+  // Sync Media Session API Actions and Playback State
+  useEffect(() => {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState =
+        playbackState === 'playing' ? 'playing' :
+        playbackState === 'paused' ? 'paused' : 'none';
+
+      try {
+        navigator.mediaSession.setActionHandler('play', () => {
+          if (audioRef.current && currentStation) {
+            audioRef.current.volume = volume;
+            audioRef.current.play().catch(() => setPlaybackState('error'));
+          }
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+          if (audioRef.current) {
+            audioRef.current.pause();
+          }
+        });
+      } catch (err) {
+        // Fallback for older browsers
+      }
+    }
+  }, [playbackState, currentStation, volume]);
+
   /** Only call from a click/tap handler. */
   const playStation = useCallback((station) => {
     const audio = audioRef.current;
@@ -79,7 +137,11 @@ export function useAudioPlayer() {
     setErrorMessage('');
 
     if (currentStation?.id === station.id) {
-      if (audio.paused) { setPlaybackState('loading'); audio.play().catch(() => setPlaybackState('error')); }
+      if (audio.paused) {
+        setPlaybackState('loading');
+        audio.volume = volume;
+        audio.play().catch(() => setPlaybackState('error'));
+      }
       else { audio.pause(); }
       return;
     }
@@ -87,10 +149,11 @@ export function useAudioPlayer() {
     audio.pause();
     audio.src = station.streamUrl;
     audio.load();
+    audio.volume = volume; // Ensure volume doesn't spike on load
     setCurrentStation(station);
     setPlaybackState('loading');
     audio.play().catch(() => setPlaybackState('error'));
-  }, [currentStation]);
+  }, [currentStation, volume]);
 
   const togglePlay = useCallback(() => {
     if (currentStation) playStation(currentStation);
@@ -99,6 +162,11 @@ export function useAudioPlayer() {
   const setVolume = useCallback((val) => {
     const v = Math.min(1, Math.max(0, val));
     setVolumeState(v);
+    try {
+      localStorage.setItem('glideRadio_volume', v.toString());
+    } catch (e) {
+      // ignore quota exceeded or sandboxed environment error
+    }
     if (audioRef.current) audioRef.current.volume = v;
   }, []);
 

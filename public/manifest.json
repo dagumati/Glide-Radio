@@ -1,7 +1,7 @@
 {
   "name": "Glide Radio",
-  "short_name": "TeslaFM",
-  "description": "Personal FM streaming dashboard for Tesla in-car browser.",
+  "short_name": "GlideFM",
+  "description": "Personal FM streaming dashboard, optimized for mobile, desktop, and car screens.",
   "start_url": "/",
   "display": "fullscreen",
   "background_color": "#0a0a0f",

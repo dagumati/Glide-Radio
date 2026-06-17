@@ -20,7 +20,7 @@ const GENRE_ICONS = {
 /**
  * StationCard – large touch-friendly Tesla card.
  */
-export function StationCard({ station, isActive, playbackState, onSelect, onFavorite, isFav, onEdit }) {
+export function StationCard({ station, isActive, playbackState, onSelect, onFavorite, isFav, onEdit, carMode = false, triggerHaptic = () => {} }) {
   const isPlaying  = isActive && playbackState === 'playing';
   const isLoading  = isActive && playbackState === 'loading';
   const hasError   = isActive && playbackState === 'error';
@@ -28,13 +28,22 @@ export function StationCard({ station, isActive, playbackState, onSelect, onFavo
   const emoji      = GENRE_ICONS[station.genre] ?? '📻';
   const accent     = station.accentColor ?? '#dc2626';
 
+  const handleSelect = () => {
+    if (!noUrl) {
+      triggerHaptic(15);
+      onSelect(station);
+    }
+  };
+
   const handleFavClick = (e) => {
     e.stopPropagation();
+    triggerHaptic(20);
     onFavorite(station);
   };
 
   const handleEditClick = (e) => {
     e.stopPropagation();
+    triggerHaptic(20);
     onEdit(station);
   };
 
@@ -43,11 +52,11 @@ export function StationCard({ station, isActive, playbackState, onSelect, onFavo
       id={`station-card-${station.id}`}
       aria-label={`Play ${station.name}`}
       aria-pressed={isActive}
-      onClick={() => !noUrl && onSelect(station)}
+      onClick={handleSelect}
       className={[
-        'group relative flex flex-col items-center justify-center gap-2',
+        'group relative flex flex-col items-center justify-center gap-2.5',
         'w-full rounded-2xl border-2 transition-all duration-300 outline-none select-none',
-        'min-h-[170px] px-3 py-4',
+        carMode ? 'min-h-[200px] px-4 py-6 md:min-h-[220px]' : 'min-h-[170px] px-3 py-4',
         'focus-visible:ring-2 focus-visible:ring-white/40',
         noUrl
           ? 'border-zinc-800 bg-zinc-900/40 cursor-default opacity-60'
@@ -94,8 +103,8 @@ export function StationCard({ station, isActive, playbackState, onSelect, onFavo
       {/* Logo / emoji */}
       <div
         className={[
-          'relative flex items-center justify-center',
-          'w-14 h-14 rounded-xl text-2xl transition-transform duration-300',
+          'relative flex items-center justify-center text-2xl transition-transform duration-300',
+          carMode ? 'w-18 h-18 md:w-20 md:h-20 rounded-2xl' : 'w-14 h-14 rounded-xl',
           isActive && !noUrl ? 'scale-110' : '',
         ].join(' ')}
         style={{
@@ -106,15 +115,24 @@ export function StationCard({ station, isActive, playbackState, onSelect, onFavo
         }}
       >
         {station.logoUrl
-          ? <img src={station.logoUrl} alt={station.name} className="w-9 h-9 object-contain rounded-lg" />
+          ? <img src={station.logoUrl} alt={station.name} className="w-10 h-10 object-contain rounded-lg" />
           : <span role="img">{emoji}</span>}
       </div>
 
       {/* Info */}
-      <div className="text-center space-y-0.5 z-10 w-full px-1">
-        <p className="font-bold text-[11px] leading-tight text-white line-clamp-2">{station.name}</p>
-        <p className="text-[10px] text-zinc-400 font-medium">{station.frequency}</p>
-        <p className="text-[9px] text-zinc-500 line-clamp-1 italic">{station.genre}</p>
+      <div className="text-center space-y-1 z-10 w-full px-1">
+        <p className={[
+          'font-bold leading-tight text-white line-clamp-2',
+          carMode ? 'text-xs md:text-sm' : 'text-[11px]'
+        ].join(' ')}>{station.name}</p>
+        <p className={[
+          'text-zinc-400 font-medium',
+          carMode ? 'text-[11px] md:text-xs' : 'text-[10px]'
+        ].join(' ')}>{station.frequency}</p>
+        <p className={[
+          'text-zinc-500 line-clamp-1 italic',
+          carMode ? 'text-[10px] md:text-[11px]' : 'text-[9px]'
+        ].join(' ')}>{station.genre}</p>
       </div>
 
       {/* Status */}
